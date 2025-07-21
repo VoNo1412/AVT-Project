@@ -16,7 +16,7 @@ function RegisterPage() {
     setLoading(true);
 
     try {
-      await axiosInstance.post(`${import.meta.env.VITE_BACKEND_DOMAIN}/users/register`, {
+      await axiosInstance.post(`/users/register`, {
         email,
         password,
       });

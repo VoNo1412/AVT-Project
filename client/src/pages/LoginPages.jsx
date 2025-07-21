@@ -18,7 +18,7 @@ function LoginPage() {
     setLoading(true);
 
     try {
-      const response = await axiosInstance.post(`${import.meta.env.VITE_BACKEND_DOMAIN}/users/login`, {
+      const response = await axiosInstance.post(`/users/login`, {
         email,
         password,
       });

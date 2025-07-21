@@ -11,7 +11,7 @@ function CategoryPage() {
 
   useEffect(() => {
     setLoading(true);
-    axiosInstance.get(`${import.meta.env.VITE_BACKEND_DOMAIN}/articles?category=${category}`)
+    axiosInstance.get(`/articles?category=${category}`)
       .then(response => setArticles(response.data))
       .catch(() => setError('Failed to load articles'))
       .finally(() => setLoading(false));

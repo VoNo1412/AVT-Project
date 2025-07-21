@@ -13,12 +13,12 @@ function HomePage() {
 
   useEffect(() => {
     setLoading(true);
-    axiosInstance.get(`${import.meta.env.VITE_BACKEND_DOMAIN}/articles?search=${searchQuery}`)
+    axiosInstance.get(`/articles?search=${searchQuery}`)
       .then(response => setArticles(Array.isArray(response.data) ? response.data : []))
       .catch(() => setError('Failed to load articles'))
       .finally(() => setLoading(false));
 
-    axiosInstance.get(`${import.meta.env.VITE_BACKEND_DOMAIN}/categories`)
+    axiosInstance.get(`/categories`)
       .then(response => setCategories(Array.isArray(response.data) ? response.data : []))
       .catch(() => setError('Failed to load categories'));
   }, []);
@@ -29,8 +29,8 @@ function HomePage() {
     debounceRef.current = setTimeout(() => {
       const query = searchQuery.trim();
       const url = query === ''
-        ? `${import.meta.env.VITE_BACKEND_DOMAIN}/articles`
-        : `${import.meta.env.VITE_BACKEND_DOMAIN}/articles?search=${encodeURIComponent(query)}`;
+        ? `/articles`
+        : `/articles?search=${encodeURIComponent(query)}`;
 
       if (searchQuery.length) {
         setLoading(true);

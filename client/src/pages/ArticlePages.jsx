@@ -9,7 +9,7 @@ function ArticlePage() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    axiosInstance.get(`${import.meta.env.VITE_BACKEND_DOMAIN}/articles/${id}`)
+    axiosInstance.get(`/articles/${id}`)
       .then(response => setArticle(response.data))
       .catch(error => {
         console.error(error);
@@ -21,7 +21,7 @@ function ArticlePage() {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      const response = await axiosInstance.post(`${import.meta.env.VITE_BACKEND_DOMAIN}/comments`, {
+      const response = await axiosInstance.post(`/comments`, {
         articleId: id,
         content: newComment,
       }, {

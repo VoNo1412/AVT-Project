@@ -20,16 +20,16 @@ function AdminPanel() {
   const loadData = async () => {
     try {
       const [articlesRes, categoriesRes, commentsRes] = await Promise.all([
-        axiosInstance.get(`${import.meta.env.VITE_BACKEND_DOMAIN}/articles`, { headers }),
-        axiosInstance.get(`${import.meta.env.VITE_BACKEND_DOMAIN}/categories`, { headers }),
-        axiosInstance.get(`${import.meta.env.VITE_BACKEND_DOMAIN}/comments`, { headers }),
+        axiosInstance.get(`/articles`, { headers }),
+        axiosInstance.get(`/categories`, { headers }),
+        axiosInstance.get(`/comments`, { headers }),
       ]);
       setArticles(articlesRes.data);
       setCategories(categoriesRes.data);
       setComments(commentsRes.data);
 
       if (user?.role === 'admin') {
-        const usersRes = await axiosInstance.get(`${import.meta.env.VITE_BACKEND_DOMAIN}/users/all`, { headers });
+        const usersRes = await axiosInstance.get(`/users/all`, { headers });
         setUsers(usersRes.data);
       }
     } catch {
@@ -46,7 +46,7 @@ function AdminPanel() {
   const handleDeleteUser = async (userId) => {
     if (!window.confirm('Are you sure you want to delete this user?')) return;
     try {
-      await axiosInstance.delete(`${import.meta.env.VITE_BACKEND_DOMAIN}/users/${userId}`, { headers });
+      await axiosInstance.delete(`/users/${userId}`, { headers });
       setUsers(users.filter(u => u._id !== userId));
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to delete user');
@@ -55,7 +55,7 @@ function AdminPanel() {
 
   const handleApprove = async (commentId) => {
     try {
-      await axiosInstance.put(`${import.meta.env.VITE_BACKEND_DOMAIN}/comments/${commentId}/approve`, {}, { headers });
+      await axiosInstance.put(`/comments/${commentId}/approve`, {}, { headers });
       loadData();
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to approve comment');
@@ -65,7 +65,7 @@ function AdminPanel() {
   const handleArticleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axiosInstance.post(`${import.meta.env.VITE_BACKEND_DOMAIN}/articles`, newArticle, { headers });
+      await axiosInstance.post(`/articles`, newArticle, { headers });
       setNewArticle({
         title: '', author: '', category: '', tags: '', content: '',
         featuredImage: '', seo: { title: '', description: '', keywords: '' }
@@ -79,7 +79,7 @@ function AdminPanel() {
   const handleCategorySubmit = async (e) => {
     e.preventDefault();
     try {
-      await axiosInstance.post(`${import.meta.env.VITE_BACKEND_DOMAIN}/categories`, newCategory, { headers });
+      await axiosInstance.post(`/categories`, newCategory, { headers });
       setNewCategory({ name: '', description: '' });
       loadData();
     } catch (err) {

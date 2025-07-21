@@ -13,7 +13,7 @@ const app = express();
 // Middleware
 app.use(helmet()); // Bảo mật HTTP headers
 app.use(cors({
-  origin: '*', 
+  origin: 'http://54.179.98.231',
   credentials: true
 }));
 app.use(express.json());
