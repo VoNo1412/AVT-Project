@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  frontend:
+    build: ./frontend
+    ports:
+      - "80:80"
+
+  backend:
+    build: ./backend
+    ports:
+      - "3000:3000"
+    environment:
+      - MONGO_URI=mongodb+srv://xkaioken9x:pnm8f7FhcgArIX3X@cluster0.mv87gry.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
