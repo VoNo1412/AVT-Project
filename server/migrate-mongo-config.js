@@ -1,7 +1,7 @@
 const config = {
   mongodb: {
-    url: 'mongodb://localhost/avt-news',
-    databaseName: 'avt-news',
+    url: process.env.MONGO_URI,
+    databaseName: 'test',
     options: {
       useNewUrlParser: true,
       useUnifiedTopology: true,

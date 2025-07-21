@@ -5,6 +5,8 @@ services:
     image: vonodev/my-fe:latest
     ports:
       - "80:80"
+    env_file:
+      - .env
 
   backend:
     image: vonodev/my-be:latest
