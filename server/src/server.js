@@ -11,7 +11,7 @@ require('dotenv').config();
 const app = express();
 
 // Middleware
-app.use(helmet()); // Bảo mật HTTP headers
+app.use(helmet()); 
 app.use(cors({
   origin: 'http://54.179.98.231',
   credentials: true
