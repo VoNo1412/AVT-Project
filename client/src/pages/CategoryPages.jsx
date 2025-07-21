@@ -10,7 +10,7 @@ function CategoryPage() {
 
   useEffect(() => {
     setLoading(true);
-    axios.get(`${import.meta.env.VITE_BACKEND_DOMAIN}/api/articles?category=${category}`)
+    axios.get(`${import.meta.env.VITE_BACKEND_DOMAIN}/articles?category=${category}`)
       .then(response => setArticles(response.data))
       .catch(() => setError('Failed to load articles'))
       .finally(() => setLoading(false));

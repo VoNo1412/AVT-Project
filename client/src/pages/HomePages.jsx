@@ -12,12 +12,12 @@ function HomePage() {
 
   useEffect(() => {
     setLoading(true);
-    axios.get(`${import.meta.env.VITE_BACKEND_DOMAIN}/api/articles?search=${searchQuery}`)
+    axios.get(`${import.meta.env.VITE_BACKEND_DOMAIN}/articles?search=${searchQuery}`)
       .then(response => setArticles(Array.isArray(response.data) ? response.data : []))
       .catch(() => setError('Failed to load articles'))
       .finally(() => setLoading(false));
 
-    axios.get(`${import.meta.env.VITE_BACKEND_DOMAIN}/api/categories`)
+    axios.get(`${import.meta.env.VITE_BACKEND_DOMAIN}/categories`)
       .then(response => setCategories(Array.isArray(response.data) ? response.data : []))
       .catch(() => setError('Failed to load categories'));
   }, []);
@@ -28,8 +28,8 @@ function HomePage() {
     debounceRef.current = setTimeout(() => {
       const query = searchQuery.trim();
       const url = query === ''
-        ? `${import.meta.env.VITE_BACKEND_DOMAIN}/api/articles`
-        : `${import.meta.env.VITE_BACKEND_DOMAIN}/api/articles?search=${encodeURIComponent(query)}`;
+        ? `${import.meta.env.VITE_BACKEND_DOMAIN}/articles`
+        : `${import.meta.env.VITE_BACKEND_DOMAIN}/articles?search=${encodeURIComponent(query)}`;
 
       if (searchQuery.length) {
         setLoading(true);

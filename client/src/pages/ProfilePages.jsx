@@ -18,7 +18,7 @@ function ProfilePage() {
       return;
     }
 
-    axios.get(`${import.meta.env.VITE_BACKEND_DOMAIN}/api/users/me`, {
+    axios.get(`${import.meta.env.VITE_BACKEND_DOMAIN}/users/me`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then(response => {
@@ -28,7 +28,7 @@ function ProfilePage() {
       })
       .catch(() => navigate('/login'));
 
-    axios.get(`${import.meta.env.VITE_BACKEND_DOMAIN}/api/categories`)
+    axios.get(`${import.meta.env.VITE_BACKEND_DOMAIN}/categories`)
       .then(response => setCategories(Array.isArray(response.data) ? response.data : []))
       .catch(error => console.error(error));
   }, [navigate]);
@@ -41,7 +41,7 @@ function ProfilePage() {
     try {
       const token = localStorage.getItem('token');
       await axios.put(
-        `${import.meta.env.VITE_BACKEND_DOMAIN}/api/users/preferences`,
+        `${import.meta.env.VITE_BACKEND_DOMAIN}/users/preferences`,
         { preferences: { categories: selectedCategories, notifications } },
         { headers: { Authorization: `Bearer ${token}` } }
       );
