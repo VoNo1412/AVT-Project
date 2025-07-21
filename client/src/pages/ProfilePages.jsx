@@ -18,7 +18,7 @@ function ProfilePage() {
       return;
     }
 
-    axios.get(`${import.meta.env.BACKEND_DOMAIN}/api/users/me`, {
+    axios.get(`${import.meta.env.VITE_BACKEND_DOMAIN}/api/users/me`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then(response => {
@@ -28,8 +28,8 @@ function ProfilePage() {
       })
       .catch(() => navigate('/login'));
 
-    axios.get(`${import.meta.env.BACKEND_DOMAIN}/api/categories`)
-      .then(response => setCategories(response.data))
+    axios.get(`${import.meta.env.VITE_BACKEND_DOMAIN}/api/categories`)
+      .then(response => setCategories(Array.isArray(response.data) ? response.data : []))
       .catch(error => console.error(error));
   }, [navigate]);
 
@@ -41,7 +41,7 @@ function ProfilePage() {
     try {
       const token = localStorage.getItem('token');
       await axios.put(
-        `${import.meta.env.BACKEND_DOMAIN}/api/users/preferences`,
+        `${import.meta.env.VITE_BACKEND_DOMAIN}/api/users/preferences`,
         { preferences: { categories: selectedCategories, notifications } },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -72,7 +72,7 @@ function ProfilePage() {
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Preferred Categories</label>
             <div className="flex flex-wrap gap-4">
-              {categories.map(category => (
+              {categories.length > 0 ? categories.map(category => (
                 <label key={category._id} className="flex items-center space-x-2">
                   <input
                     type="checkbox"
@@ -88,10 +88,10 @@ function ProfilePage() {
                   />
                   <span className="text-gray-800">{category.name}</span>
                 </label>
-              ))}
+              )) : (<div className="text-gray-500">No categories available</div>)}
             </div>
           </div>
-          
+
           {/* Notifications */}
           <div className="flex items-center space-x-2">
             <input

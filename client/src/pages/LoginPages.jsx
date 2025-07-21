@@ -17,7 +17,7 @@ function LoginPage() {
     setLoading(true);
 
     try {
-      const response = await axios.post(`${import.meta.env.BACKEND_DOMAIN}/api/users/login`, {
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_DOMAIN}/api/users/login`, {
         email,
         password,
       });

@@ -20,16 +20,16 @@ function AdminPanel() {
   const loadData = async () => {
     try {
       const [articlesRes, categoriesRes, commentsRes] = await Promise.all([
-        axios.get(`${import.meta.env.BACKEND_DOMAIN}/api/articles`, { headers }),
-        axios.get(`${import.meta.env.BACKEND_DOMAIN}/api/categories`, { headers }),
-        axios.get(`${import.meta.env.BACKEND_DOMAIN}/api/comments`, { headers }),
+        axios.get(`${import.meta.env.VITE_BACKEND_DOMAIN}/api/articles`, { headers }),
+        axios.get(`${import.meta.env.VITE_BACKEND_DOMAIN}/api/categories`, { headers }),
+        axios.get(`${import.meta.env.VITE_BACKEND_DOMAIN}/api/comments`, { headers }),
       ]);
       setArticles(articlesRes.data);
       setCategories(categoriesRes.data);
       setComments(commentsRes.data);
 
       if (user?.role === 'admin') {
-        const usersRes = await axios.get(`${import.meta.env.BACKEND_DOMAIN}/api/users/all`, { headers });
+        const usersRes = await axios.get(`${import.meta.env.VITE_BACKEND_DOMAIN}/api/users/all`, { headers });
         setUsers(usersRes.data);
       }
     } catch {
@@ -46,7 +46,7 @@ function AdminPanel() {
   const handleDeleteUser = async (userId) => {
     if (!window.confirm('Are you sure you want to delete this user?')) return;
     try {
-      await axios.delete(`${import.meta.env.BACKEND_DOMAIN}/api/users/${userId}`, { headers });
+      await axios.delete(`${import.meta.env.VITE_BACKEND_DOMAIN}/api/users/${userId}`, { headers });
       setUsers(users.filter(u => u._id !== userId));
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to delete user');
@@ -55,7 +55,7 @@ function AdminPanel() {
 
   const handleApprove = async (commentId) => {
     try {
-      await axios.put(`${import.meta.env.BACKEND_DOMAIN}/api/comments/${commentId}/approve`, {}, { headers });
+      await axios.put(`${import.meta.env.VITE_BACKEND_DOMAIN}/api/comments/${commentId}/approve`, {}, { headers });
       loadData();
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to approve comment');
@@ -65,7 +65,7 @@ function AdminPanel() {
   const handleArticleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`${import.meta.env.BACKEND_DOMAIN}/api/articles`, newArticle, { headers });
+      await axios.post(`${import.meta.env.VITE_BACKEND_DOMAIN}/api/articles`, newArticle, { headers });
       setNewArticle({
         title: '', author: '', category: '', tags: '', content: '',
         featuredImage: '', seo: { title: '', description: '', keywords: '' }
@@ -79,7 +79,7 @@ function AdminPanel() {
   const handleCategorySubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`${import.meta.env.BACKEND_DOMAIN}/api/categories`, newCategory, { headers });
+      await axios.post(`${import.meta.env.VITE_BACKEND_DOMAIN}/api/categories`, newCategory, { headers });
       setNewCategory({ name: '', description: '' });
       loadData();
     } catch (err) {

@@ -9,7 +9,7 @@ function ArticlePage() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    axios.get(`${import.meta.env.BACKEND_DOMAIN}/api/articles/${id}`)
+    axios.get(`${import.meta.env.VITE_BACKEND_DOMAIN}/api/articles/${id}`)
       .then(response => setArticle(response.data))
       .catch(error => {
         console.error(error);
@@ -21,7 +21,7 @@ function ArticlePage() {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.post(`${import.meta.env.BACKEND_DOMAIN}/api/comments`, {
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_DOMAIN}/api/comments`, {
         articleId: id,
         content: newComment,
       }, {
