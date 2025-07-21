@@ -29,10 +29,7 @@ jobs:
 
     - name: Build and push BE image
       run: |
-        cd server
-        echo "MONGO_URI=${{ secrets.MONGO_URI }}" >> .env
-        echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
-        docker build -t ${{ secrets.DOCKER_USERNAME }}/my-be:latest .
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/my-be:latest ./server
         docker push ${{ secrets.DOCKER_USERNAME }}/my-be:latest
         echo "BE image built and pushed"
 
