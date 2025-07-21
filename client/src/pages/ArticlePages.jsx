@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import axiosInstance from '../config/axios.config';
 import { useParams } from 'react-router-dom';
 
 function ArticlePage() {
@@ -9,7 +9,7 @@ function ArticlePage() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    axios.get(`${import.meta.env.VITE_BACKEND_DOMAIN}/articles/${id}`)
+    axiosInstance.get(`${import.meta.env.VITE_BACKEND_DOMAIN}/articles/${id}`)
       .then(response => setArticle(response.data))
       .catch(error => {
         console.error(error);
@@ -21,7 +21,7 @@ function ArticlePage() {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.post(`${import.meta.env.VITE_BACKEND_DOMAIN}/comments`, {
+      const response = await axiosInstance.post(`${import.meta.env.VITE_BACKEND_DOMAIN}/comments`, {
         articleId: id,
         content: newComment,
       }, {

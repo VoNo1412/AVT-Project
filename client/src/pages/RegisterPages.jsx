@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import axiosInstance from '../config/axios.config';
+
 import { useNavigate, Link } from 'react-router-dom';
 
 function RegisterPage() {
@@ -15,7 +16,7 @@ function RegisterPage() {
     setLoading(true);
 
     try {
-      await axios.post(`${import.meta.env.VITE_BACKEND_DOMAIN}/users/register`, {
+      await axiosInstance.post(`${import.meta.env.VITE_BACKEND_DOMAIN}/users/register`, {
         email,
         password,
       });

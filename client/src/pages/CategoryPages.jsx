@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import axiosInstance from '../config/axios.config';
+
 import { useParams, Link } from 'react-router-dom';
 
 function CategoryPage() {
@@ -10,7 +11,7 @@ function CategoryPage() {
 
   useEffect(() => {
     setLoading(true);
-    axios.get(`${import.meta.env.VITE_BACKEND_DOMAIN}/articles?category=${category}`)
+    axiosInstance.get(`${import.meta.env.VITE_BACKEND_DOMAIN}/articles?category=${category}`)
       .then(response => setArticles(response.data))
       .catch(() => setError('Failed to load articles'))
       .finally(() => setLoading(false));

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import axiosInstance from '../config/axios.config';
+
 import { useNavigate } from 'react-router-dom';
 
 function ProfilePage() {
@@ -18,7 +19,7 @@ function ProfilePage() {
       return;
     }
 
-    axios.get(`${import.meta.env.VITE_BACKEND_DOMAIN}/users/me`, {
+    axiosInstance.get(`${import.meta.env.VITE_BACKEND_DOMAIN}/users/me`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then(response => {
@@ -28,7 +29,7 @@ function ProfilePage() {
       })
       .catch(() => navigate('/login'));
 
-    axios.get(`${import.meta.env.VITE_BACKEND_DOMAIN}/categories`)
+    axiosInstance.get(`${import.meta.env.VITE_BACKEND_DOMAIN}/categories`)
       .then(response => setCategories(Array.isArray(response.data) ? response.data : []))
       .catch(error => console.error(error));
   }, [navigate]);
@@ -40,7 +41,7 @@ function ProfilePage() {
 
     try {
       const token = localStorage.getItem('token');
-      await axios.put(
+      await axiosInstance.put(
         `${import.meta.env.VITE_BACKEND_DOMAIN}/users/preferences`,
         { preferences: { categories: selectedCategories, notifications } },
         { headers: { Authorization: `Bearer ${token}` } }

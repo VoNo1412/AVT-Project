@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
+import axiosInstance from '../config/axios.config';
+
 import { Link } from 'react-router-dom';
 
 function HomePage() {
@@ -12,12 +13,12 @@ function HomePage() {
 
   useEffect(() => {
     setLoading(true);
-    axios.get(`${import.meta.env.VITE_BACKEND_DOMAIN}/articles?search=${searchQuery}`)
+    axiosInstance.get(`${import.meta.env.VITE_BACKEND_DOMAIN}/articles?search=${searchQuery}`)
       .then(response => setArticles(Array.isArray(response.data) ? response.data : []))
       .catch(() => setError('Failed to load articles'))
       .finally(() => setLoading(false));
 
-    axios.get(`${import.meta.env.VITE_BACKEND_DOMAIN}/categories`)
+    axiosInstance.get(`${import.meta.env.VITE_BACKEND_DOMAIN}/categories`)
       .then(response => setCategories(Array.isArray(response.data) ? response.data : []))
       .catch(() => setError('Failed to load categories'));
   }, []);
@@ -33,7 +34,7 @@ function HomePage() {
 
       if (searchQuery.length) {
         setLoading(true);
-        axios.get(url)
+        axiosInstance.get(url)
           .then(res => setArticles(res.data))
           .catch(() => setError('Failed to load articles'))
           .finally(() => setLoading(false));

@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useState } from 'react';
-import axios from 'axios';
+import axiosInstance from '../config/axios.config';
 
 export const AuthContext = createContext();
 
@@ -16,7 +16,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     try {
-      const res = await axios.get(`${import.meta.env.VITE_BACKEND_DOMAIN}/users/me`, {
+      const res = await axiosInstance.get(`${import.meta.env.VITE_BACKEND_DOMAIN}/users/me`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setUser(res.data);

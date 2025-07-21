@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
-import axios from 'axios';
+import axiosInstance from '../config/axios.config';
+
 import { useNavigate, Link } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext';
 
@@ -17,7 +18,7 @@ function LoginPage() {
     setLoading(true);
 
     try {
-      const response = await axios.post(`${import.meta.env.VITE_BACKEND_DOMAIN}/users/login`, {
+      const response = await axiosInstance.post(`${import.meta.env.VITE_BACKEND_DOMAIN}/users/login`, {
         email,
         password,
       });
