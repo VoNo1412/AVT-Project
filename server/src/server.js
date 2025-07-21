@@ -12,7 +12,10 @@ const app = express();
 
 // Middleware
 app.use(helmet()); // Bảo mật HTTP headers
-app.use(cors());
+app.use(cors({
+  origin: 'http://54.179.98.231', 
+  credentials: true,
+}));
 app.use(express.json());
 
 // Kết nối MongoDB
