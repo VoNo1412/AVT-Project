@@ -3,8 +3,6 @@ version: '3.8'
 services:
   frontend:
     image: vonodev/my-fe:latest
-    volumes:
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
     ports:
       - "80:80"
     depends_on:
@@ -14,5 +12,3 @@ services:
     image: vonodev/my-be:latest
     ports:
       - "3000:3000"
-    env_file:
-      - .env
