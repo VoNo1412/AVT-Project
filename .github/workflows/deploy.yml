@@ -39,7 +39,7 @@ jobs:
         HOST: ${{ secrets.EC2_HOST }}
       run: |
         echo "SSH connection attempt to $HOST"
-        ssh -o StrictHostKeyChecking=no ec2-user@$HOST << 'EOF'
+        ssh -o StrictHostKeyChecking=no ubuntu@$HOST << 'EOF'
           echo "Connected to EC2 at $(date)"
           docker --version
           docker pull ${{ secrets.DOCKER_USERNAME }}/my-fe:latest
