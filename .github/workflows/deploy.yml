@@ -33,10 +33,13 @@ jobs:
     - name: Deploy on EC2 via SSH
       run: |
         ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_HOST }} << 'EOF'
+          set -ex
+
           docker pull ${{ secrets.DOCKER_USERNAME }}/my-fe:latest
           docker pull ${{ secrets.DOCKER_USERNAME }}/my-be:latest
 
           cd ~/app
+
           docker-compose down
           docker-compose up -d
         EOF
