@@ -1,54 +1,53 @@
-name: Debug CI/CD Deployment
+name: CI/CD with DockerHub
 
 on:
   push:
     branches: [ master ]
 
 jobs:
-  debug-deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
+    - name: Checkout source
       uses: actions/checkout@v3
-
-    - name: Debug - Show environment
-      run: |
-        echo "Runner OS: $RUNNER_OS"
-        echo "GitHub Actor: $GITHUB_ACTOR"
-        echo "GitHub Repository: $GITHUB_REPOSITORY"
-        echo "Current Directory: $(pwd)"
-
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v2
-
+      
     - name: Log in to Docker Hub
       run: |
         echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
         echo "Docker login successful"
 
-    - name: Build and push Docker image
+    - name: Build and push FE image
       run: |
-        docker build -t ${{ secrets.DOCKER_USERNAME }}/my-app:latest .
-        docker push ${{ secrets.DOCKER_USERNAME }}/my-app:latest
-        echo "Image built and pushed"
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/my-fe:latest ./client
+        docker push ${{ secrets.DOCKER_USERNAME }}/my-fe:latest
+        echo "FE image built and pushed"
 
-    - name: Debug - Verify Docker images
+    - name: Build and push BE image
       run: |
-        docker images
-        echo "Listing Docker images complete"
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/my-be:latest ./server
+        docker push ${{ secrets.DOCKER_USERNAME }}/my-be:latest
+        echo "BE image built and pushed"
 
-    - name: Deploy to EC2 (Debug Mode)
+    - name: Set up SSH
+      uses: webfactory/ssh-agent@v0.9.0
+      with:
+        ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
+
+    - name: Deploy on EC2 via SSH
       env:
-        SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
         HOST: ${{ secrets.EC2_HOST }}
       run: |
-        echo "SSH Key and Host set"
-        ssh -o StrictHostKeyChecking=no -i <(echo "$SSH_KEY") ec2-user@$HOST << 'EOF'
-          echo "Connected to EC2"
+        echo "SSH connection attempt to $HOST"
+        ssh -o StrictHostKeyChecking=no ec2-user@$HOST << 'EOF'
+          echo "Connected to EC2 at $(date)"
           docker --version
-          docker ps -a
-          echo "Docker commands executed"
+          docker pull ${{ secrets.DOCKER_USERNAME }}/my-fe:latest
+          docker pull ${{ secrets.DOCKER_USERNAME }}/my-be:latest
+          cd ~/app || echo "Directory ~/app not found, skipping"
+          docker-compose down || echo "docker-compose down failed, skipping"
+          docker-compose up -d || echo "docker-compose up failed, skipping"
+          echo "Deployment commands executed"
         EOF
 
     - name: Final Debug Output
