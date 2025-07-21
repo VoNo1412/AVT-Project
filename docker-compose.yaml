@@ -10,5 +10,5 @@ services:
     image: vonodev/my-be:latest
     ports:
       - "3000:3000"
-    environment:
-      - MONGO_URI=mongodb+srv://xkaioken9x:pnm8f7FhcgArIX3X@cluster0.mv87gry.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+    env_file:
+      - .env
