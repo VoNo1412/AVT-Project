@@ -21,8 +21,6 @@ jobs:
       run: |
         cd client
         echo "VITE_BACKEND_DOMAIN=/api" > .env
-        npm install
-        npm run build
         docker build -t ${{ secrets.DOCKER_USERNAME }}/my-fe:latest .
         docker push ${{ secrets.DOCKER_USERNAME }}/my-fe:latest
 
