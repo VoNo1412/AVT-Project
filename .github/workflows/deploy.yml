@@ -27,10 +27,7 @@ jobs:
 
     - name: Build and push BE image
       run: |
-        cd server
-        echo "MONGO_URI=${{ secrets.MONGO_URI }}" >> .env
-        echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
-        docker build -t ${{ secrets.DOCKER_USERNAME }}/my-be:latest .
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/my-be:latest ./server
         docker push ${{ secrets.DOCKER_USERNAME }}/my-be:latest
         echo "BE image built and pushed"
 
@@ -42,6 +39,8 @@ jobs:
     - name: Deploy on EC2 via SSH
       env:
         HOST: ${{ secrets.EC2_HOST }}
+        MONGO_URI: ${{ secrets.MONGO_URI }}
+        SECRET_KEY: ${{ secrets.SECRET_KEY }}
       run: |
         echo "SSH connection attempt to $HOST"
         ssh -o StrictHostKeyChecking=no ubuntu@$HOST << 'EOF'
@@ -50,6 +49,10 @@ jobs:
           docker pull ${{ secrets.DOCKER_USERNAME }}/my-fe:latest
           docker pull ${{ secrets.DOCKER_USERNAME }}/my-be:latest
           cd ~/app || echo "Directory ~/app not found, skipping"
+          cat > .env << EOL
+          MONGO_URI=$MONGO_URI
+          SECRET_KEY=$SECRET_KEY
+          EOL
           docker-compose down || echo "docker-compose down failed, skipping"
           docker-compose up -d || echo "docker-compose up failed, skipping"
           echo "Deployment commands executed"
